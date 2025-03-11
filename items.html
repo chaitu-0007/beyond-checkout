@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Receipt</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 20px;
+            border: 2px solid #333;
+        }
+
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px dashed #333;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .receipt-title {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .receipt-disease {
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 0;
+            padding: 0.5rem;
+            border-bottom: 1px dotted #ccc;
+        }
+
+        .item-name {
+            font-weight: bold;
+        }
+
+        .item-desc {
+            color: #666;
+            max-width: 60%;
+            text-align: right;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 2px dashed #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-header">
+        <h1 class="receipt-title">MEDICAL RECEIPT</h1>
+        <p class="receipt-disease" id="diseaseTitle"></p>
+    </div>
+
+    <div id="recommendations"></div>
+
+    <div class="footer">
+        <p>✔️ Always consult a doctor</p>
+        <p>📅 Generated on: <span id="date"></span></p>
+    </div>
+
+    <script>
+        const recommendations = {
+            'Cold': [
+                { name: 'Vitamin C Supplements', description: 'Boost immunity and reduce cold duration' },
+                { name: 'Warm Fluids', description: 'Herbal teas and soups to soothe throat' },
+                { name: 'Steam Inhalation', description: 'Relieve nasal congestion' }
+            ],
+            'Cough': [
+                { name: 'Honey Lemon Tea', description: 'Natural remedy to soothe throat irritation' },
+                { name: 'Cough Syrup', description: 'Consult doctor for appropriate medication' },
+                { name: 'Ginger Shots', description: 'Anti-inflammatory properties to reduce cough' }
+            ],
+            'Fever': [
+                { name: 'Paracetamol', description: 'For temperature regulation (consult dosage)' },
+                { name: 'Cool Compress', description: 'Apply to forehead to reduce fever' },
+                { name: 'Hydration Fluids', description: 'Water and electrolytes to prevent dehydration' }
+            ],
+            'Diarrhea': [
+                { name: 'ORS Solution', description: 'Replenish lost fluids and electrolytes' },
+                { name: 'Bananas', description: 'Rich in potassium to restore energy' },
+                { name: 'Probiotics', description: 'Restore gut bacteria balance' }
+            ],
+            'Dengue': [
+                { name: 'Papaya Leaf Extract', description: 'May help increase platelet count' },
+                { name: 'Fluid Intake', description: 'Critical for recovery and hydration' },
+                { name: 'Medical Supervision', description: 'Immediate professional care required' }
+            ],
+            'Typhoid': [
+                { name: 'Antibiotics', description: 'Prescribed by healthcare professional' },
+                { name: 'High-calorie Diet', description: 'Maintain strength during recovery' },
+                { name: 'Complete Rest', description: 'Essential for body recovery' }
+            ],
+            'Others': [
+                { name: 'Consult Doctor', description: 'Professional medical advice recommended' },
+                { name: 'Maintain Hydration', description: 'Drink plenty of fluids' },
+                { name: 'Adequate Rest', description: 'Ensure proper sleep and relaxation' }
+            ]
+        };
+
+        // Get disease from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const disease = urlParams.get('disease') || 'Others';
+        
+        // Set receipt content
+        document.getElementById('diseaseTitle').textContent = `${disease.toUpperCase()}`;
+        document.getElementById('date').textContent = new Date().toLocaleDateString();
+
+        const container = document.getElementById('recommendations');
+        recommendations[disease].forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'receipt-item';
+            div.innerHTML = `
+                <span class="item-name">${index + 1}. ${item.name}</span>
+                <span class="item-desc">${item.description}</span>
+            `;
+            container.appendChild(div);
+        });
+    </script>
+</body>
+</html>
